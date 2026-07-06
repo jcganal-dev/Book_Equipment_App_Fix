@@ -133,11 +133,17 @@ def create_booking():
     # Make sure that unavailable items ar blocked
     if equipment["status"] != "available":
         return jsonify({"error": f"${equipment['name']} is unavailable (${equipment['status']})"}), 400
+    
+    if data["customer"].strip() == "":
+        return jsonify({"error": "Customer name cannot be empty"}), 400
 
-    from_date = parse_date(data["from_date"])
-    to_date = parse_date(data["to_date"])
-    if to_date < from_date:
-        return jsonify({"error": "End date cannot be before start date"}), 400
+    try:
+        from_date = parse_date(data["from_date"])
+        to_date = parse_date(data["to_date"])
+        if to_date < from_date:
+            return jsonify({"error": "End date cannot be before start date"}), 400
+    except:
+        return jsonify({"error": "Please enter valid start and end date"}), 400
 
     bookings = load_bookings()
     conflict = find_conflicting_booking(equipment["id"], from_date, to_date, bookings)
