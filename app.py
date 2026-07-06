@@ -132,7 +132,7 @@ def create_booking():
 
     # Make sure that unavailable items are blocked
     if equipment["status"] != "available":
-        return jsonify({"error": f"${equipment['name']} is unavailable (${equipment['status']})"}), 400
+        return jsonify({"error": f"{equipment['name']} is unavailable ({equipment['status']})"}), 400
     
     if data["customer"].strip() == "":
         return jsonify({"error": "Customer name cannot be empty"}), 400
